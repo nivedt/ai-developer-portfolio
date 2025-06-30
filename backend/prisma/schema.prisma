@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  passwordHash String?  @map("password_hash")
+  firstName   String   @map("first_name")
+  lastName    String   @map("last_name")
+  title       String?
+  bio         String?
+  location    String?
+  avatarUrl   String?  @map("avatar_url")
+  githubUrl   String?  @map("github_url")
+  linkedinUrl String?  @map("linkedin_url")
+  website     String?
+  phone       String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  projects    Project[]
+  skills      Skill[]
+  experiences Experience[]
+  educations  Education[]
+  analytics   Analytics[]
+  messages    Message[]
+
+  @@map("users")
+}
+
+model Project {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  title         String
+  description   String?
+  aiDescription String?  @map("ai_description")
+  techStack     String[] @map("tech_stack")
+  githubUrl     String?  @map("github_url")
+  liveUrl       String?  @map("live_url")
+  imageUrls     String[] @map("image_urls")
+  featured      Boolean  @default(false)
+  startDate     DateTime? @map("start_date")
+  endDate       DateTime? @map("end_date")
+  status        String   @default("completed") // completed, in-progress, planned
+  category      String?  // web, mobile, ai, devops, etc.
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("projects")
+}
+
+model Skill {
+  id               Int     @id @default(autoincrement())
+  userId           Int     @map("user_id")
+  name             String
+  category         String  // programming, framework, tool, soft-skill
+  proficiency      Int     // 1-5 scale
+  yearsExperience  Decimal @map("years_experience")
+  verified         Boolean @default(false)
+  icon             String?
+  color            String?
+  description      String?
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("skills")
+}
+
+model Experience {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  company     String
+  position    String
+  description String?
+  location    String?
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime? @map("end_date")
+  current     Boolean   @default(false)
+  achievements String[]
+  technologies String[]
+  companyUrl  String?   @map("company_url")
+  companyLogo String?   @map("company_logo")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("experiences")
+}
+
+model Education {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  institution String
+  degree      String
+  field       String?
+  gpa         Decimal?
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime? @map("end_date")
+  current     Boolean   @default(false)
+  description String?
+  achievements String[]
+  location    String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("educations")
+}
+
+model Analytics {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  eventType String   @map("event_type")
+  eventData Json?    @map("event_data")
+  visitorIp String?  @map("visitor_ip")
+  userAgent String?  @map("user_agent")
+  referer   String?
+  timestamp DateTime @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("analytics")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  name      String
+  email     String
+  subject   String?
+  message   String
+  phone     String?
+  company   String?
+  isRead    Boolean  @default(false) @map("is_read")
+  replied   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("messages")
+}
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  content     String
+  excerpt     String?
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  tags        String[]
+  readTime    Int?     @map("read_time")
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  coverImage  String?  @map("cover_image")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("blog_posts")
+}
