@@ -1,0 +1,7 @@
+{ 
+  "name": "ai-developer-portfolio", 
+  "scripts": { 
+    "build": "node build.js", 
+    "install": "cd frontend && npm install" 
+  } 
+} 

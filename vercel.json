@@ -1,19 +1,5 @@
 { 
-  "version": 2, 
-  "builds": [ 
-    { 
-      "src": "frontend/package.json", 
-      "use": "@vercel/static-build", 
-      "config": { 
-        "distDir": "build", 
-        "framework": "create-react-app" 
-      } 
-    } 
-  ], 
-  "routes": [ 
-    { 
-      "src": "/(.*)", 
-      "dest": "/$1" 
-    } 
-  ] 
+  "buildCommand": "npm run build", 
+  "outputDirectory": "frontend/build", 
+  "installCommand": "npm run install" 
 } 
