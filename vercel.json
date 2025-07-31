@@ -1,5 +1,5 @@
 { 
-  "buildCommand": "cd frontend && npm run build", 
+  "buildCommand": "cd frontend && PUBLIC_URL=../public npm run build", 
   "outputDirectory": "frontend/build", 
   "installCommand": "cd frontend && npm install" 
 } 
