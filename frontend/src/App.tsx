@@ -23,7 +23,7 @@ function App() {
 
   const fetchSkills = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/skills');
+      const response = await fetch('https://ai-developer-portfolio-production.up.railway.app/api/skills');
       const data = await response.json();
       if (data.success) {
         setSkills(data.data.skills);
