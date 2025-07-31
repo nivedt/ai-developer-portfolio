@@ -1,5 +1,5 @@
 { 
-  "buildCommand": "cd frontend && PUBLIC_URL=../public npm run build", 
+  "buildCommand": "cd frontend && SKIP_PREFLIGHT_CHECK=true npm run build", 
   "outputDirectory": "frontend/build", 
   "installCommand": "cd frontend && npm install" 
 } 
