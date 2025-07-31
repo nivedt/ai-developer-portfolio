@@ -112,4 +112,4 @@ docker-compose.override.yml
 
 # Uploads
 uploads/
-*/uploads/
+*/uploads/public/ 
