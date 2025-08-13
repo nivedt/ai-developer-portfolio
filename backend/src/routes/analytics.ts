@@ -7,15 +7,16 @@ const router = express.Router();
 // @desc    Track user event
 // @route   POST /api/analytics/track
 // @access  Public
-router.post('/track', optionalAuth, async (req, res) => {
+router.post('/track', optionalAuth, async (req, res): Promise<void> => {
   try {
     const { eventType, eventData } = req.body;
 
     if (!eventType) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Event type is required',
       });
+      return;
     }
 
     const analytics = await prisma.analytics.create({
@@ -45,7 +46,7 @@ router.post('/track', optionalAuth, async (req, res) => {
 // @desc    Get analytics stats
 // @route   GET /api/analytics/stats
 // @access  Private
-router.get('/stats', authenticate, async (req, res) => {
+router.get('/stats', authenticate, async (req, res): Promise<void>  => {
   try {
     const { startDate, endDate } = req.query;
 
