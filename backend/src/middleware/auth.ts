@@ -20,15 +20,16 @@ export const authenticate = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     
     if (!token) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         error: 'Access denied. No token provided.',
       });
+      return;
     }
     
     const decoded: JwtPayload = verifyToken(token);
@@ -46,10 +47,11 @@ export const authenticate = async (
     });
     
     if (!user || !user.isActive) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         error: 'User not found or inactive.',
       });
+      return;
     }
     
     req.user = user;
