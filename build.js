@@ -1,19 +1,15 @@
-const { execSync } = require('child_process'); 
 const fs = require('fs'); 
-const path = require('path'); 
+const { execSync } = require('child_process'); 
  
-try { 
-  // Copy public folder to root temporarily 
-  execSync('xcopy frontend\\public public\\ /E /I /Y', { stdio: 'inherit' }); 
-ECHO is on.
-  // Run build from frontend directory 
-  process.chdir('frontend'); 
-  execSync('npm run build', { stdio: 'inherit' }); 
-ECHO is on.
-  // Clean up 
-  process.chdir('..'); 
-  execSync('rmdir /s /q public', { stdio: 'inherit' }); 
-} catch (error) { 
-  console.error('Build failed:', error.message); 
-  process.exit(1); 
-} 
+console.log('Starting build process...'); 
+ 
+// Copy frontend files to root for build 
+execSync('xcopy frontend\\src src\\ /E /I /Y', { stdio: 'inherit' }); 
+execSync('xcopy frontend\\public public\\ /E /I /Y', { stdio: 'inherit' }); 
+execSync('copy frontend\\package.json package.json /Y', { stdio: 'inherit' }); 
+execSync('copy frontend\\package-lock.json package-lock.json /Y', { stdio: 'inherit' }); 
+ 
+// Run the build 
+execSync('npm run build-react', { stdio: 'inherit' }); 
+ 
+console.log('Build completed successfully!'); 

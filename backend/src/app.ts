@@ -10,7 +10,7 @@ import userRoutes from './routes/user';
 import projectRoutes from './routes/projects';
 import skillRoutes from './routes/skills';
 import contactRoutes from './routes/contact';
-// import aiRoutes from './routes/ai';
+import aiRoutes from './routes/ai';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -70,7 +70,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
-// app.use('/api/ai', aiRoutes);
+app.use('/api/ai', aiRoutes);
 
 // API documentation endpoint
 app.get('/api/docs', (req, res) => {

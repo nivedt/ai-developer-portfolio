@@ -97,4 +97,15 @@ router.get('/stats', authenticate, async (req, res): Promise<void>  => {
   }
 });
 
+// @desc    Simple analytics test endpoint
+// @route   GET /api/analytics/test
+// @access  Public
+router.get('/test', (req, res): void => {
+  res.json({
+    success: true,
+    message: 'Analytics routes are working!',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 export default router;
