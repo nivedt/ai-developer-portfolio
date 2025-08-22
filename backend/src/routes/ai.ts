@@ -33,7 +33,7 @@ router.post('/enhance-project', async (req, res): Promise<void> => {
 
     const enhancedDescription = await AIService.generateProjectDescription({
       title: project.title,
-      description: project.description,
+      description: project.description || '',
       techStack: project.techStack,
       category: project.category || undefined,
     });
@@ -89,7 +89,7 @@ router.post('/enhance-bio', async (req, res): Promise<void> => {
       skills: user.skills.map(skill => skill.name),
       projects: user.projects.map(project => ({
         title: project.title,
-        description: project.description,
+        description: project.description || '',
         techStack: project.techStack,
         category: project.category || undefined,
       })),
@@ -149,7 +149,7 @@ router.post('/chat', async (req, res): Promise<void> => {
       skills: user.skills.map(skill => skill.name),
       projects: user.projects.map(project => ({
         title: project.title,
-        description: project.description,
+        description: project.description || '',
         techStack: project.techStack,
         category: project.category || undefined,
       })),

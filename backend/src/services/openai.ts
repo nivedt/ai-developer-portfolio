@@ -6,16 +6,16 @@ const openai = new OpenAI({
 
 export interface ProjectData {
   title: string;
-  description: string;
+  description: string | null;
   techStack: string[];
-  category?: string;
+  category?: string | null;
 }
 
 export interface UserProfile {
   firstName: string;
   lastName: string;
-  title: string;
-  bio: string;
+  title: string | null;
+  bio: string | null;
   skills: string[];
   projects: ProjectData[];
 }
@@ -28,7 +28,7 @@ export class AIService {
         As a technical writer, create a compelling project description for a software developer's portfolio.
         
         Project: ${project.title}
-        Original Description: ${project.description}
+        Original Description: ${project.description || 'No description'}
         Tech Stack: ${project.techStack.join(', ')}
         Category: ${project.category || 'General'}
         
@@ -50,10 +50,10 @@ export class AIService {
         temperature: 0.7,
       });
 
-      return response.choices[0].message.content?.trim() || project.description;
+      return response.choices[0].message.content?.trim() || project.description || 'No description';
     } catch (error) {
       console.error('Error generating project description:', error);
-      return project.description;
+      return project.description || 'No description available';
     }
   }
 
@@ -64,8 +64,8 @@ export class AIService {
         Create a compelling professional bio for a software developer's portfolio.
         
         Name: ${profile.firstName} ${profile.lastName}
-        Title: ${profile.title}
-        Current Bio: ${profile.bio}
+        Title: ${profile.title || 'Software Developer'}
+        Current Bio: ${profile.bio || 'No bio provided'}
         Skills: ${profile.skills.join(', ')}
         Projects: ${profile.projects.map(p => p.title).join(', ')}
         
@@ -87,10 +87,10 @@ export class AIService {
         temperature: 0.7,
       });
 
-      return response.choices[0].message.content?.trim() || profile.bio;
+      return response.choices[0].message.content?.trim() || profile.bio || 'Software developer passionate about technology';
     } catch (error) {
       console.error('Error generating bio:', error);
-      return profile.bio;
+      return profile.bio || 'Software developer passionate about technology';
     }
   }
 
